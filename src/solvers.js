@@ -45,10 +45,12 @@ window.countNRooksSolutions = function(n) {
     //iterate over board
     for(let i = 0; i < boardSize; i++) {
       //Check if board is valid
-      if(!grid.hasRowConflictAt(row) && !grid.hasColConflictAt(i)) {
-        board[row][i] = 1;
-        //if placed no for loop.
-        rooks--;
+      board[row][i] = 1;
+      //if placed no for loop.
+      rooks--;
+      if(grid.hasRowConflictAt(row) && grid.hasColConflictAt(i)) {
+        board[row][i] = 0;
+        rooks++;
         if(rooks === 0) {
           solutionCount++;
           board[row][i] = 0;
