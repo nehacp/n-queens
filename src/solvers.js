@@ -14,11 +14,11 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  
+
   var solution = [];
   var grid = new Board({n: n});
   var board = grid.attributes;
-  
+
   for(let i = 0; i < n; i++) {
 
     board[i][i] = 1;
@@ -31,21 +31,21 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
 
-  var solutionCount = 0; 
+  var solutionCount = 0;
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
-  
+
   var findSolutions = function(row) {
-    
+
     for(let i = 0; i < size; i++) {
-      
+
       board[row][i] = 1;
-      
+
       if (grid.hasColConflictAt(i)){
         board[row][i] = 0;
         continue;
-      } 
+      }
 
       if (row < size-1) {
         findSolutions(row + 1);
@@ -53,8 +53,8 @@ window.countNRooksSolutions = function(n) {
         solutionCount++;
         board[row][i] = 0;
         return;
-      } 
-      
+      }
+
       board[row][i] = 0;
     }
   };
@@ -65,33 +65,99 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  
+  //Would not work if n < 4
   var solution = [];
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
-
-  for (var i =0; i < size; i++) {
-    //add a queen
-      //check for conflict
-    //if no conflict
-      //add another queen
-    //else remove queen
-      //go to next row
-      //add queen
-    //check for conflict again
-    
+  if (n === 2) {
+    return [[0, 0], [0, 0]];
+  } else if (n === 3) {
+    return [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
   }
 
+  var findSolution = function(row) {
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+    for (var col=0; col < size; col++) {
+      board[row][col] = 1;
+      if (grid.hasColConflictAt(col) || grid.hasMajorDiagonalConflictAt(col-row) ||
+          grid.hasMinorDiagonalConflictAt(row+col)) {
+            board[row][col] = 0;
+            continue;
+      }
+
+      if (row < size-1) {
+        findSolution(row+1);
+      } else {
+        var temp = [];
+        for (var i=0; i < size; i++){
+          temp.push(board[i].slice())
+        //  solution.push([board[i].slice()]);
+        }
+        solution.push(temp);
+
+        board[row][col] = 0;
+        return solution;
+      }
+      board[row][col] = 0;
+    }
+  }
+  findSolution(0);
+
+  //Add a queen,
+  //console.log('solution length', solution.length);
+  //console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  return solution.length ? solution[0] : solution;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   var solutionCount = 0;
+  var solution = [];
+  var grid = new Board({n: n});
+  var board = grid.attributes;
+  var size = grid.get('n');
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+  if (n === 2) {
+    // solution =  [[], []];
+    return 0;
+  } else if (n === 3) {
+    // solution =  [[], [], []];
+    return 0;
+  }
+
+  var findSolution = function(row) {
+
+    for (var col=0; col < size; col++) {
+      board[row][col] = 1;
+      if (grid.hasColConflictAt(col) || grid.hasMajorDiagonalConflictAt(col-row) ||
+          grid.hasMinorDiagonalConflictAt(row+col)) {
+            board[row][col] = 0;
+            continue;
+      }
+
+      if (row < size-1) {
+        findSolution(row+1);
+      } else {
+        var temp = [];
+        for (var i=0; i < size; i++){
+          temp.push(board[i].slice())
+        //  solution.push([board[i].slice()]);
+        }
+        solution.push(temp);
+
+        board[row][col] = 0;
+        return solution;
+      }
+      board[row][col] = 0;
+    }
+  }
+  findSolution(0);
+
+  //Add a queen,
+  //console.log('solution length', solution.length);
+  //console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+//  return solution.length ? solution[0] : solution;
+
+  return solution.length ? solution.length : 1
 };
