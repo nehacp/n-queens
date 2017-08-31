@@ -37,27 +37,30 @@ window.countNRooksSolutions = function(n) {
   var board = grid.attributes;
   var size = grid.get('n');
   
-  var findPosition = function(row) {
+  var findSolutions = function(row) {
     
     for(let i = 0; i < size; i++) {
+      
       board[row][i] = 1;
+      
       if (grid.hasColConflictAt(i)){
         board[row][i] = 0;
         continue;
       } 
 
       if (row < size-1) {
-        findPosition(row + 1);
+        findSolutions(row + 1);
       } else {
         solutionCount++;
         board[row][i] = 0;
         return;
       } 
+      
       board[row][i] = 0;
     }
-  }
+  };
 
-  findPosition(0);
+  findSolutions(0);
   return solutionCount;
 };
 
