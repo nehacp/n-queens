@@ -120,7 +120,7 @@
           return true;
         }
       }
-      return false; // fixme
+      return false;
     },
 
 
@@ -136,8 +136,6 @@
       let size = this.get('n');
 
       for (var i = 0; i < size; i++) {
-        //if column is negative
-          //increment
         if(col >= 0) {
           if (board[i][col] === 1) {
             count++
@@ -159,7 +157,7 @@
           return true;
         }
       }
-      return false; // fixme
+      return false;
     },
 
 
@@ -189,14 +187,13 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      //debugger;
       let index = (this.get('n') - 1) * 2;
       for (index; index >= 0; index--) {
         if (this.hasMinorDiagonalConflictAt(index)) {
           return true;
         }
       }
-      return false; // fixme
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/

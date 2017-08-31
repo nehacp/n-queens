@@ -63,21 +63,21 @@ window.countNRooksSolutions = function(n) {
   return solutionCount;
 };
 
+
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  //Would not work if n < 4
   var solution = [];
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
+
   if (n === 2) {
-    return [[0, 0], [0, 0]];
+    return [[], []];
   } else if (n === 3) {
-    return [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    return [[], [], []];
   }
 
   var findSolution = function(row) {
-
     for (var col=0; col < size; col++) {
       board[row][col] = 1;
       if (grid.hasColConflictAt(col) || grid.hasMajorDiagonalConflictAt(col-row) ||
@@ -91,8 +91,7 @@ window.findNQueensSolution = function(n) {
       } else {
         var temp = [];
         for (var i=0; i < size; i++){
-          temp.push(board[i].slice())
-        //  solution.push([board[i].slice()]);
+          temp.push(board[i].slice());
         }
         solution.push(temp);
 
@@ -102,35 +101,26 @@ window.findNQueensSolution = function(n) {
       board[row][col] = 0;
     }
   }
-  findSolution(0);
 
-  //Add a queen,
-  //console.log('solution length', solution.length);
-  //console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  findSolution(0);
   return solution.length ? solution[0] : solution;
 };
+
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   var solutionCount = 0;
-  var solution = [];
+  if(n === 0) { return 1; }
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
-
-  if (n === 2) {
-    // solution =  [[], []];
-    return 0;
-  } else if (n === 3) {
-    // solution =  [[], [], []];
-    return 0;
-  }
 
   var findSolution = function(row) {
 
     for (var col=0; col < size; col++) {
       board[row][col] = 1;
-      if (grid.hasColConflictAt(col) || grid.hasMajorDiagonalConflictAt(col-row) ||
+      if (grid.hasColConflictAt(col) ||
+          grid.hasMajorDiagonalConflictAt(col-row) ||
           grid.hasMinorDiagonalConflictAt(row+col)) {
             board[row][col] = 0;
             continue;
@@ -139,25 +129,14 @@ window.countNQueensSolutions = function(n) {
       if (row < size-1) {
         findSolution(row+1);
       } else {
-        var temp = [];
-        for (var i=0; i < size; i++){
-          temp.push(board[i].slice())
-        //  solution.push([board[i].slice()]);
-        }
-        solution.push(temp);
-
+        solutionCount++;
         board[row][col] = 0;
-        return solution;
+        return;
       }
       board[row][col] = 0;
     }
   }
+
   findSolution(0);
-
-  //Add a queen,
-  //console.log('solution length', solution.length);
-  //console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-//  return solution.length ? solution[0] : solution;
-
-  return solution.length ? solution.length : 1
+  return solutionCount;
 };
