@@ -35,28 +35,28 @@ window.countNRooksSolutions = function(n) {
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
-  var takenColumn = {};
+  var rooks = {};
 
   var findSolutions = function(row) {
 
     for(let col = 0; col < size; col++) {
-      if(takenColumn[col] === true) {
+      if(rooks[col] === true) {
         continue;
       }
       board[row][col] = 1;
       if (row < size-1) {
-        takenColumn[col] = true;
+        rooks[col] = true;
         findSolutions(row + 1);
       } else {
         solutionCount++;
         board[row][col] = 0;
-        delete takenColumn[col];
+        delete rooks[col];
 
         return;
       }
 
       board[row][col] = 0;
-      delete takenColumn[col];
+      delete rooks[col];
     }
   };
 
@@ -71,6 +71,7 @@ window.findNQueensSolution = function(n) {
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
+  var queens = {};
 
   if (n === 2) {
     return [[], []];
@@ -80,11 +81,15 @@ window.findNQueensSolution = function(n) {
 
   var findSolution = function(row) {
     for (var col=0; col < size; col++) {
+      if (queens[col]){
+        continue;
+      }
       board[row][col] = 1;
-      if (grid.hasColConflictAt(col) ||
-          grid.hasMajorDiagonalConflictAt(col-row) ||
+      queens[col] = true;
+      if (grid.hasMajorDiagonalConflictAt(col-row) ||
           grid.hasMinorDiagonalConflictAt(row+col)) {
             board[row][col] = 0;
+            delete queens[col];
             continue;
       }
 
@@ -98,11 +103,13 @@ window.findNQueensSolution = function(n) {
         solution.push(temp);
 
         board[row][col] = 0;
+        delete queens[col];
         return solution;
       }
       board[row][col] = 0;
+      delete queens[col];
     }
-  }
+  };
 
   findSolution(0);
   return solution.length ? solution[0] : solution;
@@ -116,15 +123,22 @@ window.countNQueensSolutions = function(n) {
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
+  var queens = {};
 
   var findSolution = function(row) {
 
     for (var col=0; col < size; col++) {
+      
+      if (queens['col-'+ col]){
+        continue;
+      }
+
       board[row][col] = 1;
-      if (grid.hasColConflictAt(col) ||
-          grid.hasMajorDiagonalConflictAt(col-row) ||
+      queens['col-' + col] = true;
+      if (grid.hasMajorDiagonalConflictAt(col-row) ||
           grid.hasMinorDiagonalConflictAt(row+col)) {
             board[row][col] = 0;
+            delete queens['col-' + col];
             continue;
       }
 
@@ -133,11 +147,13 @@ window.countNQueensSolutions = function(n) {
       } else {
         solutionCount++;
         board[row][col] = 0;
+        delete queens['col-' + col];
         return;
       }
       board[row][col] = 0;
+      delete queens['col-' + col];
     }
-  }
+  };
 
   findSolution(0);
   return solutionCount;
