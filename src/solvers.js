@@ -124,12 +124,15 @@ window.countNQueensSolutions = function(n) {
   var board = grid.attributes;
   var size = grid.get('n');
   var queens = {};
+  var major, minor;
 
   var findSolution = function(row) {
 
     for (var col = 0; col < size; col++) {
       
-      if (queens[col]) {
+      if (queens[col] || 
+      major && (row === major[0] && col === major[1]) ||
+      minor && row === minor[0] && col === minor[1]) {
         continue;
       }
 
@@ -143,6 +146,8 @@ window.countNQueensSolutions = function(n) {
       }
 
       if (row < size - 1) {
+        major = [row + 1, col + 1];
+        minor = [row + 1, col - 1];
         findSolution(row + 1);
       } else {
         solutionCount++;
