@@ -19,7 +19,7 @@ window.findNRooksSolution = function(n) {
   var grid = new Board({n: n});
   var board = grid.attributes;
 
-  for(let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {
 
     board[i][i] = 1;
     solution.push(board[i]);
@@ -39,12 +39,12 @@ window.countNRooksSolutions = function(n) {
 
   var findSolutions = function(row) {
 
-    for(let col = 0; col < size; col++) {
-      if(rooks[col] === true) {
+    for (let col = 0; col < size; col++) {
+      if (rooks[col] === true) {
         continue;
       }
       board[row][col] = 1;
-      if (row < size-1) {
+      if (row < size - 1) {
         rooks[col] = true;
         findSolutions(row + 1);
       } else {
@@ -80,24 +80,24 @@ window.findNQueensSolution = function(n) {
   }
 
   var findSolution = function(row) {
-    for (var col=0; col < size; col++) {
-      if (queens[col]){
+    for (var col = 0; col < size; col++) {
+      if (queens[col]) {
         continue;
       }
       board[row][col] = 1;
       queens[col] = true;
-      if (grid.hasMajorDiagonalConflictAt(col-row) ||
-          grid.hasMinorDiagonalConflictAt(row+col)) {
-            board[row][col] = 0;
-            delete queens[col];
-            continue;
+      if (grid.hasMajorDiagonalConflictAt(col - row) ||
+          grid.hasMinorDiagonalConflictAt(row + col)) {
+        board[row][col] = 0;
+        delete queens[col];
+        continue;
       }
 
-      if (row < size-1) {
-        findSolution(row+1);
+      if (row < size - 1) {
+        findSolution(row + 1);
       } else {
         var temp = [];
-        for (var i=0; i < size; i++){
+        for (var i = 0; i < size; i++) {
           temp.push(board[i].slice());
         }
         solution.push(temp);
@@ -119,7 +119,7 @@ window.findNQueensSolution = function(n) {
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
   var solutionCount = 0;
-  if(n === 0) { return 1; }
+  if (n === 0) { return 1; }
   var grid = new Board({n: n});
   var board = grid.attributes;
   var size = grid.get('n');
@@ -127,31 +127,31 @@ window.countNQueensSolutions = function(n) {
 
   var findSolution = function(row) {
 
-    for (var col=0; col < size; col++) {
+    for (var col = 0; col < size; col++) {
       
-      if (queens['col-'+ col]){
+      if (queens[col]) {
         continue;
       }
 
       board[row][col] = 1;
-      queens['col-' + col] = true;
-      if (grid.hasMajorDiagonalConflictAt(col-row) ||
-          grid.hasMinorDiagonalConflictAt(row+col)) {
-            board[row][col] = 0;
-            delete queens['col-' + col];
-            continue;
+      queens[col] = true;
+      if (grid.hasMajorDiagonalConflictAt(col - row) ||
+          grid.hasMinorDiagonalConflictAt(row + col)) {
+        board[row][col] = 0;
+        delete queens[col];
+        continue;
       }
 
-      if (row < size-1) {
-        findSolution(row+1);
+      if (row < size - 1) {
+        findSolution(row + 1);
       } else {
         solutionCount++;
         board[row][col] = 0;
-        delete queens['col-' + col];
+        delete queens[col];
         return;
       }
       board[row][col] = 0;
-      delete queens['col-' + col];
+      delete queens[col];
     }
   };
 

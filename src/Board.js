@@ -109,7 +109,7 @@
           count++;
         }
       }
-      return count > 1 // fixme
+      return count > 1;
     },
 
     // test if any columns on this board contain conflicts
@@ -136,9 +136,9 @@
       let size = this.get('n');
 
       for (var i = 0; i < size; i++) {
-        if(col >= 0) {
+        if (col >= 0) {
           if (board[i][col] === 1) {
-            count++
+            count++;
           }
         }
         col++;
@@ -175,7 +175,7 @@
       for (var i = 0; i < size; i++) {
         //if column is negative
           //increment
-        if(col < size) {
+        if (col < size) {
           if (board[i][col] === 1) {
             count++;
           }
